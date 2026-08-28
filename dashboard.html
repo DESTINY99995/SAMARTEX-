@@ -1,0 +1,3579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Samartex Hospital | Emergency Admin Dashboard</title>
+
+<style>
+
+/* =====================================================
+   RESET
+===================================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --green:#087f68;
+    --dark-green:#045d50;
+    --light-green:#e9f7f3;
+    --red:#d92332;
+    --dark-red:#9e1520;
+    --light-red:#fff0f1;
+    --orange:#f39c12;
+    --blue:#2878d8;
+    --white:#fff;
+    --background:#f3f6f7;
+    --text:#263238;
+    --muted:#718096;
+    --border:#e1e7ea;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:var(--background);
+    color:var(--text);
+    min-height:100vh;
+}
+
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    width:255px;
+    height:100vh;
+    background:linear-gradient(180deg,#087f68,#045d50);
+    color:white;
+    z-index:2000;
+    overflow-y:auto;
+    transition:.3s;
+}
+
+.logo-area{
+    padding:22px 15px;
+    text-align:center;
+    border-bottom:1px solid rgba(255,255,255,.15);
+}
+
+.logo-area img{
+    width:90px;
+    height:90px;
+    object-fit:contain;
+    background:white;
+    border-radius:50%;
+    padding:7px;
+}
+
+.logo-area h2{
+    margin-top:10px;
+    font-size:18px;
+}
+
+.logo-area small{
+    opacity:.7;
+}
+
+.navigation{
+    padding:15px 12px;
+}
+
+.nav-title{
+    font-size:10px;
+    opacity:.55;
+    text-transform:uppercase;
+    margin:15px 12px 8px;
+}
+
+.nav-item{
+    width:100%;
+    border:0;
+    background:transparent;
+    color:white;
+    padding:12px 14px;
+    border-radius:8px;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    cursor:pointer;
+    text-align:left;
+    margin-bottom:4px;
+}
+
+.nav-item:hover,
+.nav-item.active{
+    background:rgba(255,255,255,.15);
+}
+
+.nav-icon{
+    width:22px;
+    text-align:center;
+    font-size:17px;
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.main{
+    margin-left:255px;
+    min-height:100vh;
+}
+
+
+/* =====================================================
+   TOPBAR
+===================================================== */
+
+.topbar{
+    height:70px;
+    background:white;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 28px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.menu-button{
+    display:none;
+    border:0;
+    background:none;
+    font-size:26px;
+}
+
+.search{
+    width:320px;
+    position:relative;
+}
+
+.search input{
+    width:100%;
+    padding:12px 15px 12px 40px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    outline:none;
+}
+
+.search span{
+    position:absolute;
+    left:14px;
+    top:11px;
+}
+
+
+/* =====================================================
+   ADMIN PROFILE
+===================================================== */
+
+.admin-profile{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    position:relative;
+}
+
+.admin-avatar{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    overflow:hidden;
+    border:3px solid var(--light-green);
+}
+
+.admin-avatar img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.admin-profile strong{
+    display:block;
+}
+
+.admin-profile small{
+    color:var(--muted);
+}
+
+
+/* =====================================================
+   CONTENT
+===================================================== */
+
+.content{
+    padding:28px;
+}
+
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:22px;
+}
+
+.page-header h1{
+    font-size:27px;
+}
+
+.page-header p{
+    color:var(--muted);
+    margin-top:5px;
+}
+
+
+/* =====================================================
+   EMERGENCY BANNER
+===================================================== */
+
+.emergency-banner{
+    background:linear-gradient(120deg,#b91825,#ed3442);
+    color:white;
+    border-radius:15px;
+    padding:20px;
+    margin-bottom:24px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    box-shadow:0 8px 25px rgba(180,20,35,.2);
+}
+
+.emergency-left{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.emergency-icon{
+    width:58px;
+    height:58px;
+    border-radius:50%;
+    background:rgba(255,255,255,.18);
+    display:grid;
+    place-items:center;
+    font-size:30px;
+}
+
+.emergency-banner h2{
+    font-size:19px;
+}
+
+.emergency-banner p{
+    margin-top:5px;
+    opacity:.9;
+    font-size:13px;
+}
+
+.siren-button{
+    border:0;
+    background:white;
+    color:#c91e2a;
+    padding:13px 20px;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.siren-button.active{
+    animation:sirenButton .5s infinite alternate;
+}
+
+@keyframes sirenButton{
+    from{transform:scale(1);}
+    to{transform:scale(1.05);}
+}
+
+
+/* =====================================================
+   STATS
+===================================================== */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:25px;
+}
+
+.stat-card{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:13px;
+    padding:20px;
+    box-shadow:0 4px 15px rgba(0,0,0,.04);
+}
+
+.stat-icon{
+    width:45px;
+    height:45px;
+    display:grid;
+    place-items:center;
+    border-radius:9px;
+    background:var(--light-green);
+    font-size:21px;
+}
+
+.stat-number{
+    font-size:30px;
+    font-weight:bold;
+    margin-top:16px;
+}
+
+.stat-label{
+    color:var(--muted);
+    font-size:13px;
+    margin-top:5px;
+}
+
+
+/* =====================================================
+   PANELS
+===================================================== */
+
+.dashboard-grid{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:20px;
+}
+
+.panel{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:13px;
+    overflow:hidden;
+    margin-bottom:20px;
+}
+
+.panel-header{
+    padding:17px 20px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.panel-body{
+    padding:20px;
+}
+
+
+/* =====================================================
+   LIVE AMBULANCE
+===================================================== */
+
+.ambulance-card{
+    background:#111c21;
+    color:white;
+    border-radius:13px;
+    padding:20px;
+}
+
+.ambulance-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.live-dot{
+    display:inline-block;
+    width:10px;
+    height:10px;
+    background:#25d366;
+    border-radius:50%;
+    margin-right:6px;
+    box-shadow:0 0 10px #25d366;
+}
+
+.ambulance-number{
+    font-size:26px;
+    font-weight:bold;
+    margin:20px 0 5px;
+}
+
+.ambulance-location{
+    color:#b7c2c6;
+    font-size:13px;
+}
+
+.status-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:18px;
+}
+
+.status-box{
+    background:#1e2c32;
+    border-radius:8px;
+    padding:12px;
+}
+
+.status-box small{
+    color:#9eaaae;
+    display:block;
+    margin-bottom:5px;
+}
+
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+.table-wrapper{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:600px;
+}
+
+th,td{
+    padding:13px 15px;
+    text-align:left;
+    border-bottom:1px solid var(--border);
+    font-size:13px;
+}
+
+th{
+    color:var(--muted);
+    text-transform:uppercase;
+    font-size:10px;
+}
+
+.status{
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:bold;
+}
+
+.status.active{
+    background:#e5f7ed;
+    color:#087345;
+}
+
+.status.pending{
+    background:#fff4d6;
+    color:#a36b00;
+}
+
+.status.emergency{
+    background:#ffe5e7;
+    color:#c51e2b;
+}
+
+
+/* =====================================================
+   BUTTON
+===================================================== */
+
+.primary-button{
+    background:var(--green);
+    color:white;
+    border:0;
+    padding:11px 17px;
+    border-radius:7px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.primary-button:hover{
+    background:var(--dark-green);
+}
+
+.delete{
+    color:var(--red);
+}
+
+.action-button{
+    border:0;
+    background:none;
+    cursor:pointer;
+    font-size:15px;
+}
+
+
+/* =====================================================
+   PAGE SECTIONS
+===================================================== */
+
+.page-section{
+    display:none;
+}
+
+.page-section.active{
+    display:block;
+}
+
+
+/* =====================================================
+   FORMS
+===================================================== */
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:16px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+}
+
+.form-group.full{
+    grid-column:1/-1;
+}
+
+.form-group label{
+    font-size:13px;
+    font-weight:bold;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+    padding:11px;
+    border:1px solid var(--border);
+    border-radius:7px;
+    outline:none;
+    font-family:inherit;
+}
+
+.form-group textarea{
+    min-height:110px;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+    border-color:var(--green);
+}
+
+
+/* =====================================================
+   UPLOAD
+===================================================== */
+
+.upload-area{
+    border:2px dashed #b8c8c6;
+    padding:35px 20px;
+    border-radius:10px;
+    text-align:center;
+    cursor:pointer;
+    background:#fafdfc;
+    display:block;
+}
+
+.upload-area:hover{
+    border-color:var(--green);
+    background:var(--light-green);
+}
+
+.upload-area strong{
+    display:block;
+    margin:8px 0;
+}
+
+.upload-area p{
+    color:var(--muted);
+    font-size:13px;
+}
+
+
+/* =====================================================
+   MEDIA
+===================================================== */
+
+.media-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
+    gap:15px;
+}
+
+.media-card{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.media-preview{
+    height:140px;
+    background:#e8eeee;
+    display:grid;
+    place-items:center;
+    font-size:40px;
+}
+
+.media-preview img,
+.media-preview video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.media-info{
+    padding:10px;
+    font-size:12px;
+}
+
+
+/* =====================================================
+   DOCTOR CARDS
+===================================================== */
+
+.doctor-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    gap:18px;
+}
+
+.doctor-card{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:13px;
+    overflow:hidden;
+}
+
+.doctor-photo{
+    height:190px;
+    background:#eaf1f1;
+}
+
+.doctor-photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.doctor-info{
+    padding:15px;
+}
+
+.doctor-info h3{
+    font-size:16px;
+}
+
+.doctor-info p{
+    color:var(--muted);
+    font-size:13px;
+    margin-top:5px;
+}
+
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    z-index:5000;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-content{
+    width:min(650px,100%);
+    max-height:90vh;
+    overflow-y:auto;
+    background:white;
+    border-radius:13px;
+}
+
+.modal-header{
+    padding:18px 20px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    justify-content:space-between;
+}
+
+.close{
+    border:0;
+    background:none;
+    font-size:25px;
+    cursor:pointer;
+}
+
+.modal-body{
+    padding:20px;
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+.toast{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    background:#263238;
+    color:white;
+    padding:13px 18px;
+    border-radius:8px;
+    transform:translateY(100px);
+    opacity:0;
+    transition:.3s;
+    z-index:6000;
+}
+
+.toast.show{
+    transform:translateY(0);
+    opacity:1;
+}
+
+
+/* =====================================================
+   SIREN LIGHT
+===================================================== */
+
+.siren-light{
+    position:fixed;
+    top:80px;
+    right:20px;
+    width:18px;
+    height:18px;
+    border-radius:50%;
+    background:#aaa;
+    z-index:1500;
+}
+
+.siren-light.active{
+    animation:sirenLight .35s infinite alternate;
+}
+
+@keyframes sirenLight{
+    0%{
+        background:#ff1728;
+        box-shadow:0 0 25px #ff1728;
+    }
+
+    100%{
+        background:#168cff;
+        box-shadow:0 0 25px #168cff;
+    }
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:1000px){
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .dashboard-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:700px){
+
+    .sidebar{
+        transform:translateX(-100%);
+    }
+
+    .sidebar.open{
+        transform:translateX(0);
+    }
+
+    .main{
+        margin-left:0;
+    }
+
+    .menu-button{
+        display:block;
+    }
+
+    .search{
+        display:none;
+    }
+
+    .content{
+        padding:17px;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .form-group.full{
+        grid-column:auto;
+    }
+
+    .emergency-banner{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+}
+
+@media(max-width:450px){
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .admin-profile div{
+        display:none;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="logo-area">
+
+        <img src="images/logo.png" alt="Samartex Hospital">
+
+        <h2>Samartex Hospital</h2>
+
+        <small>Emergency Administration</small>
+
+    </div>
+
+    <nav class="navigation">
+
+        <div class="nav-title">Main</div>
+
+        <button class="nav-item active" data-page="dashboard">
+            <span class="nav-icon">📊</span>
+            Dashboard
+        </button>
+
+        <button class="nav-item" data-page="patients">
+            <span class="nav-icon">🧑‍🤝‍🧑</span>
+            Patients
+        </button>
+
+        <button class="nav-item" data-page="doctors">
+            <span class="nav-icon">👨‍⚕️</span>
+            Doctors
+        </button>
+
+        <button class="nav-item" data-page="appointments">
+            <span class="nav-icon">📅</span>
+            Appointments
+        </button>
+
+        <div class="nav-title">Emergency</div>
+
+        <button class="nav-item" data-page="ambulance">
+            <span class="nav-icon">🚑</span>
+            Ambulance
+        </button>
+
+        <button class="nav-item" data-page="emergency">
+            <span class="nav-icon">🚨</span>
+            Emergency
+        </button>
+
+        <div class="nav-title">Hospital</div>
+
+        <button class="nav-item" data-page="pharmacy">
+            <span class="nav-icon">💊</span>
+            Pharmacy
+        </button>
+
+        <button class="nav-item" data-page="media">
+            <span class="nav-icon">🖼️</span>
+            Images & Videos
+        </button>
+
+        <button class="nav-item" data-page="news">
+            <span class="nav-icon">📰</span>
+            News
+        </button>
+
+        <button class="nav-item" data-page="messages">
+            <span class="nav-icon">💬</span>
+            Messages
+        </button>
+
+        <button class="nav-item" data-page="settings">
+            <span class="nav-icon">⚙️</span>
+            Settings
+        </button>
+
+        <button class="nav-item" onclick="logout()">
+            <span class="nav-icon">🚪</span>
+            Logout
+        </button>
+
+    </nav>
+
+</aside>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<div class="main">
+
+<header class="topbar">
+
+    <button class="menu-button" onclick="toggleSidebar()">
+        ☰
+    </button>
+
+    <div class="search">
+        <span>🔍</span>
+        <input id="globalSearch" type="search"
+               placeholder="Search dashboard...">
+    </div>
+
+    <div class="admin-profile">
+
+        <div class="admin-avatar">
+
+            <img src="image/admin.png"
+                 alt="Administrator">
+
+        </div>
+
+        <div>
+
+            <strong>Administrator</strong>
+
+            <small>Hospital Admin</small>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<main class="content">
+
+
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
+
+<section class="page-section active" id="dashboard">
+
+<div class="page-header">
+
+    <div>
+
+        <h1>Emergency Dashboard</h1>
+
+        <p>
+            Samartex Hospital emergency and administration control center.
+        </p>
+
+    </div>
+
+    <button class="primary-button"
+            onclick="showPage('emergency')">
+
+        🚨 Emergency Center
+
+    </button>
+
+</div>
+
+
+<!-- EMERGENCY -->
+
+<div class="emergency-banner">
+
+    <div class="emergency-left">
+
+        <div class="emergency-icon">
+            🚨
+        </div>
+
+        <div>
+
+            <h2 id="emergencyTitle">
+                Emergency System Ready
+            </h2>
+
+            <p id="emergencyText">
+                Press the siren button to activate emergency alert.
+            </p>
+
+        </div>
+
+    </div>
+
+    <button class="siren-button"
+            id="sirenButton"
+            onclick="toggleSiren()">
+
+        🔊 START SIREN
+
+    </button>
+
+</div>
+
+
+<!-- STATISTICS -->
+
+<div class="stats">
+
+    <div class="stat-card">
+
+        <div class="stat-icon">🧑</div>
+
+        <div class="stat-number"
+             id="patientCount">0</div>
+
+        <div class="stat-label">
+            Total Patients
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">👨‍⚕️</div>
+
+        <div class="stat-number"
+             id="doctorCount">0</div>
+
+        <div class="stat-label">
+            Doctors
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">📅</div>
+
+        <div class="stat-number"
+             id="appointmentCount">0</div>
+
+        <div class="stat-label">
+            Appointments
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">💊</div>
+
+        <div class="stat-number"
+             id="medicineCount">0</div>
+
+        <div class="stat-label">
+            Medicines
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="dashboard-grid">
+
+
+<!-- AMBULANCE -->
+
+<div class="panel">
+
+    <div class="panel-header">
+
+        <h3>🚑 Live Ambulance</h3>
+
+        <span class="status active">
+            <span class="live-dot"></span>
+            LIVE
+        </span>
+
+    </div>
+
+    <div class="panel-body">
+
+        <div class="ambulance-card">
+
+            <div class="ambulance-top">
+
+                <strong>AMBULANCE SAM-01</strong>
+
+                <span>🚨</span>
+
+            </div>
+
+            <div class="ambulance-number">
+                SAM-AMB-001
+            </div>
+
+            <div class="ambulance-location">
+                📍 Samartex Hospital Compound
+            </div>
+
+            <div class="status-row">
+
+                <div class="status-box">
+
+                    <small>Driver</small>
+
+                    Available
+
+                </div>
+
+                <div class="status-box">
+
+                    <small>Paramedic</small>
+
+                    On Duty
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ACTIVITY -->
+
+<div class="panel">
+
+    <div class="panel-header">
+
+        <h3>Live Activity</h3>
+
+    </div>
+
+    <div class="panel-body"
+         id="activityList">
+
+        <p style="font-size:13px">
+            🟢 Emergency system online
+        </p>
+
+        <br>
+
+        <p style="font-size:13px">
+            🚑 Ambulance SAM-01 ready
+        </p>
+
+        <br>
+
+        <p style="font-size:13px">
+            🏥 Hospital system operational
+        </p>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<!-- RECENT APPOINTMENTS -->
+
+<div class="panel">
+
+    <div class="panel-header">
+
+        <h3>Recent Appointments</h3>
+
+        <button class="primary-button"
+                onclick="showPage('appointments')">
+
+            View All
+
+        </button>
+
+    </div>
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Patient</th>
+                    <th>Doctor</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+
+            </thead>
+
+            <tbody id="recentAppointments"></tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     PATIENTS
+===================================================== -->
+
+<section class="page-section" id="patients">
+
+<div class="page-header">
+
+    <div>
+
+        <h1>Patient Management</h1>
+
+        <p>Manage hospital patient records.</p>
+
+    </div>
+
+    <button class="primary-button"
+            onclick="openModal('patientModal')">
+
+        + Add Patient
+
+    </button>
+
+</div>
+
+
+<div class="panel">
+
+<div class="panel-header">
+    <h3>Patient Records</h3>
+</div>
+
+<div class="table-wrapper">
+
+<table>
+
+<thead>
+
+<tr>
+    <th>Name</th>
+    <th>Patient ID</th>
+    <th>Phone</th>
+    <th>Gender</th>
+    <th>Action</th>
+</tr>
+
+</thead>
+
+<tbody id="patientTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     DOCTORS
+===================================================== -->
+
+<section class="page-section" id="doctors">
+
+<div class="page-header">
+
+    <div>
+
+        <h1>Doctors</h1>
+
+        <p>Manage doctors and their profile photographs.</p>
+
+    </div>
+
+    <button class="primary-button"
+            onclick="openModal('doctorModal')">
+
+        + Add Doctor
+
+    </button>
+
+</div>
+
+
+<div class="doctor-grid" id="doctorGrid"></div>
+
+</section>
+
+
+<!-- =====================================================
+     APPOINTMENTS
+===================================================== -->
+
+<section class="page-section" id="appointments">
+
+<div class="page-header">
+
+    <div>
+
+        <h1>Appointments</h1>
+
+        <p>Schedule and manage patient visits.</p>
+
+    </div>
+
+    <button class="primary-button"
+            onclick="openModal('appointmentModal')">
+
+        + New Appointment
+
+    </button>
+
+</div>
+
+
+<div class="panel">
+
+<div class="table-wrapper">
+
+<table>
+
+<thead>
+
+<tr>
+    <th>Patient</th>
+    <th>Doctor</th>
+    <th>Date</th>
+    <th>Time</th>
+    <th>Status</th>
+    <th>Action</th>
+</tr>
+
+</thead>
+
+<tbody id="appointmentTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     AMBULANCE
+===================================================== -->
+
+<section class="page-section" id="ambulance">
+
+<div class="page-header">
+
+    <div>
+
+        <h1>🚑 Ambulance Control</h1>
+
+        <p>Monitor emergency vehicles.</p>
+
+    </div>
+
+    <button class="primary-button"
+            onclick="toggleSiren()">
+
+        🚨 Toggle Siren
+
+    </button>
+
+</div>
+
+
+<div class="dashboard-grid">
+
+<div class="ambulance-card">
+
+    <div class="ambulance-top">
+
+        <strong>AMBULANCE SAM-01</strong>
+
+        <span id="ambulanceLive">
+            🟢 LIVE
+        </span>
+
+    </div>
+
+    <div class="ambulance-number">
+        SAM-AMB-001
+    </div>
+
+    <div class="ambulance-location">
+        📍 Samartex Hospital Compound
+    </div>
+
+    <div class="status-row">
+
+        <div class="status-box">
+            <small>Vehicle</small>
+            Ready
+        </div>
+
+        <div class="status-box">
+            <small>Driver</small>
+            Available
+        </div>
+
+        <div class="status-box">
+            <small>Paramedic</small>
+            Available
+        </div>
+
+        <div class="status-box">
+            <small>Emergency</small>
+            <span id="ambulanceEmergency">
+                Standby
+            </span>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="panel">
+
+    <div class="panel-header">
+        <h3>Emergency Controls</h3>
+    </div>
+
+    <div class="panel-body">
+
+        <button class="primary-button"
+                style="width:100%;background:#d92332"
+                onclick="toggleSiren()">
+
+            🚨 START / STOP SIREN
+
+        </button>
+
+        <br><br>
+
+        <button class="primary-button"
+                style="width:100%;background:#2878d8"
+                onclick="showToast('Ambulance dispatched')">
+
+            🚑 DISPATCH AMBULANCE
+
+        </button>
+
+    </div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     EMERGENCY
+===================================================== -->
+
+<section class="page-section" id="emergency">
+
+<div class="page-header">
+
+    <div>
+
+        <h1>🚨 Emergency Center</h1>
+
+        <p>Hospital emergency response controls.</p>
+
+    </div>
+
+</div>
+
+
+<div class="emergency-banner">
+
+    <div class="emergency-left">
+
+        <div class="emergency-icon">
+            🚨
+        </div>
+
+        <div>
+
+            <h2 id="emergencyPageTitle">
+                Emergency Standby
+            </h2>
+
+            <p>
+                Emergency response system is ready.
+            </p>
+
+        </div>
+
+    </div>
+
+    <button class="siren-button"
+            onclick="toggleSiren()">
+
+        🔊 START SIREN
+
+    </button>
+
+</div>
+
+
+<div class="panel">
+
+<div class="panel-header">
+    <h3>Emergency Response</h3>
+</div>
+
+<div class="panel-body">
+
+    <div class="form-grid">
+
+        <div class="form-group">
+
+            <label>Emergency Type</label>
+
+            <select id="emergencyType">
+
+                <option>Medical Emergency</option>
+                <option>Ambulance Required</option>
+                <option>Accident</option>
+                <option>Critical Patient</option>
+                <option>Other</option>
+
+            </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Location</label>
+
+            <input id="emergencyLocation"
+                   placeholder="Emergency location">
+
+        </div>
+
+
+        <div class="form-group full">
+
+            <label>Emergency Details</label>
+
+            <textarea id="emergencyDetails"
+                      placeholder="Describe emergency..."></textarea>
+
+        </div>
+
+    </div>
+
+    <br>
+
+    <button class="primary-button"
+            style="background:#d92332"
+            onclick="activateEmergency()">
+
+        🚨 ACTIVATE EMERGENCY
+
+    </button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     PHARMACY
+===================================================== -->
+
+<section class="page-section" id="pharmacy">
+
+<div class="page-header">
+
+    <div>
+
+        <h1>💊 Pharmacy</h1>
+
+        <p>Manage medicines and inventory.</p>
+
+    </div>
+
+    <button class="primary-button"
+            onclick="openModal('medicineModal')">
+
+        + Add Medicine
+
+    </button>
+
+</div>
+
+
+<div class="panel">
+
+<div class="table-wrapper">
+
+<table>
+
+<thead>
+
+<tr>
+    <th>Medicine</th>
+    <th>Category</th>
+    <th>Stock</th>
+    <th>Expiry</th>
+    <th>Action</th>
+</tr>
+
+</thead>
+
+<tbody id="medicineTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     MEDIA
+===================================================== -->
+
+<section class="page-section" id="media">
+
+<div class="page-header">
+
+    <div>
+
+        <h1>🖼️ Images & Videos</h1>
+
+        <p>Upload hospital images and videos.</p>
+
+    </div>
+
+</div>
+
+
+<div class="panel">
+
+<div class="panel-body">
+
+<label class="upload-area">
+
+    <div style="font-size:40px">
+        📁
+    </div>
+
+    <strong>
+        Upload Hospital Images or Videos
+    </strong>
+
+    <p>
+        JPG, PNG, WEBP, MP4 and supported formats
+    </p>
+
+    <input type="file"
+           id="mediaUpload"
+           accept="image/*,video/*"
+           multiple
+           hidden>
+
+</label>
+
+</div>
+
+</div>
+
+
+<div class="media-grid" id="mediaGrid"></div>
+
+</section>
+
+
+<!-- =====================================================
+     NEWS
+===================================================== -->
+
+<section class="page-section" id="news">
+
+<div class="page-header">
+
+    <div>
+
+        <h1>📰 News & Updates</h1>
+
+        <p>Publish hospital announcements.</p>
+
+    </div>
+
+</div>
+
+
+<div class="panel">
+
+<div class="panel-body">
+
+<div class="form-grid">
+
+<div class="form-group">
+
+<label>Title</label>
+
+<input id="newsTitle"
+       placeholder="Announcement title">
+
+</div>
+
+
+<div class="form-group">
+
+<label>Date</label>
+
+<input id="newsDate"
+       type="date">
+
+</div>
+
+
+<div class="form-group full">
+
+<label>Announcement</label>
+
+<textarea id="newsContent"
+          placeholder="Write announcement..."></textarea>
+
+</div>
+
+</div>
+
+<br>
+
+<button class="primary-button"
+        onclick="addNews()">
+
+    Publish
+
+</button>
+
+</div>
+
+</div>
+
+
+<div id="newsList"></div>
+
+</section>
+
+
+<!-- =====================================================
+     MESSAGES
+===================================================== -->
+
+<section class="page-section" id="messages">
+
+<div class="page-header">
+
+<div>
+
+<h1>💬 Messages</h1>
+
+<p>Website enquiries and contact messages.</p>
+
+</div>
+
+</div>
+
+
+<div class="panel">
+
+<div class="panel-body">
+
+No new messages.
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     SETTINGS
+===================================================== -->
+
+<section class="page-section" id="settings">
+
+<div class="page-header">
+
+<div>
+
+<h1>⚙️ Settings</h1>
+
+<p>Hospital configuration.</p>
+
+</div>
+
+</div>
+
+
+<div class="panel">
+
+<div class="panel-body">
+
+<div class="form-grid">
+
+<div class="form-group">
+
+<label>Hospital Name</label>
+
+<input value="Samartex Hospital">
+
+</div>
+
+
+<div class="form-group">
+
+<label>Hospital Phone</label>
+
+<input placeholder="+233 ...">
+
+</div>
+
+
+<div class="form-group full">
+
+<label>Hospital Address</label>
+
+<input placeholder="Hospital address">
+
+</div>
+
+
+<div class="form-group full">
+
+<label>About Hospital</label>
+
+<textarea placeholder="Hospital description"></textarea>
+
+</div>
+
+</div>
+
+<br>
+
+<button class="primary-button"
+        onclick="showToast('Settings saved')">
+
+Save Settings
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+</main>
+
+</div>
+
+
+<!-- SIREN LIGHT -->
+
+<div class="siren-light" id="sirenLight"></div>
+
+
+<!-- =====================================================
+     PATIENT MODAL
+===================================================== -->
+
+<div class="modal" id="patientModal">
+
+<div class="modal-content">
+
+<div class="modal-header">
+
+<h3>Add Patient</h3>
+
+<button class="close"
+        onclick="closeModal('patientModal')">
+
+×
+
+</button>
+
+</div>
+
+<div class="modal-body">
+
+<div class="form-grid">
+
+<div class="form-group">
+
+<label>Full Name</label>
+
+<input id="patientName"
+       placeholder="Patient name">
+
+</div>
+
+
+<div class="form-group">
+
+<label>Patient ID</label>
+
+<input id="patientId"
+       placeholder="SAM-001">
+
+</div>
+
+
+<div class="form-group">
+
+<label>Phone</label>
+
+<input id="patientPhone"
+       placeholder="Phone">
+
+</div>
+
+
+<div class="form-group">
+
+<label>Gender</label>
+
+<select id="patientGender">
+
+<option>Male</option>
+<option>Female</option>
+<option>Other</option>
+
+</select>
+
+</div>
+
+</div>
+
+<br>
+
+<button class="primary-button"
+        onclick="addPatient()">
+
+Save Patient
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     DOCTOR MODAL
+===================================================== -->
+
+<div class="modal" id="doctorModal">
+
+<div class="modal-content">
+
+<div class="modal-header">
+
+<h3>Add Doctor</h3>
+
+<button class="close"
+        onclick="closeModal('doctorModal')">
+
+×
+
+</button>
+
+</div>
+
+<div class="modal-body">
+
+<div class="form-grid">
+
+<div class="form-group">
+
+<label>Doctor Name</label>
+
+<input id="doctorName"
+       placeholder="Dr. John Doe">
+
+</div>
+
+
+<div class="form-group">
+
+<label>Specialization</label>
+
+<input id="doctorSpecialty"
+       placeholder="Cardiology">
+
+</div>
+
+
+<div class="form-group">
+
+<label>Phone</label>
+
+<input id="doctorPhone"
+       placeholder="Phone">
+
+</div>
+
+
+<div class="form-group">
+
+<label>Doctor Photo</label>
+
+<input id="doctorPhoto"
+       type="file"
+       accept="image/*">
+
+</div>
+
+</div>
+
+<br>
+
+<button class="primary-button"
+        onclick="addDoctor()">
+
+Save Doctor
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     APPOINTMENT MODAL
+===================================================== -->
+
+<div class="modal" id="appointmentModal">
+
+<div class="modal-content">
+
+<div class="modal-header">
+
+<h3>New Appointment</h3>
+
+<button class="close"
+        onclick="closeModal('appointmentModal')">
+
+×
+
+</button>
+
+</div>
+
+<div class="modal-body">
+
+<div class="form-grid">
+
+<div class="form-group">
+
+<label>Patient</label>
+
+<input id="appointmentPatient">
+
+</div>
+
+
+<div class="form-group">
+
+<label>Doctor</label>
+
+<input id="appointmentDoctor">
+
+</div>
+
+
+<div class="form-group">
+
+<label>Date</label>
+
+<input id="appointmentDate"
+       type="date">
+
+</div>
+
+
+<div class="form-group">
+
+<label>Time</label>
+
+<input id="appointmentTime"
+       type="time">
+
+</div>
+
+</div>
+
+<br>
+
+<button class="primary-button"
+        onclick="addAppointment()">
+
+Save Appointment
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     MEDICINE MODAL
+===================================================== -->
+
+<div class="modal" id="medicineModal">
+
+<div class="modal-content">
+
+<div class="modal-header">
+
+<h3>Add Medicine</h3>
+
+<button class="close"
+        onclick="closeModal('medicineModal')">
+
+×
+
+</button>
+
+</div>
+
+<div class="modal-body">
+
+<div class="form-grid">
+
+<div class="form-group">
+
+<label>Medicine</label>
+
+<input id="medicineName">
+
+</div>
+
+
+<div class="form-group">
+
+<label>Category</label>
+
+<input id="medicineCategory">
+
+</div>
+
+
+<div class="form-group">
+
+<label>Stock</label>
+
+<input id="medicineStock"
+       type="number">
+
+</div>
+
+
+<div class="form-group">
+
+<label>Expiry</label>
+
+<input id="medicineExpiry"
+       type="date">
+
+</div>
+
+</div>
+
+<br>
+
+<button class="primary-button"
+        onclick="addMedicine()">
+
+Save Medicine
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="toast" id="toast">
+    Saved successfully
+</div>
+
+
+<script>
+
+/* =====================================================
+   LOGIN PROTECTION
+===================================================== */
+
+if(
+    sessionStorage.getItem("adminLoggedIn")
+    !== "true"
+){
+    window.location.href="index.html";
+}
+
+
+/* =====================================================
+   DATA
+===================================================== */
+
+let patients =
+JSON.parse(localStorage.getItem("patients") || "[]");
+
+let doctors =
+JSON.parse(localStorage.getItem("doctors") || "[]");
+
+let appointments =
+JSON.parse(localStorage.getItem("appointments") || "[]");
+
+let medicines =
+JSON.parse(localStorage.getItem("medicines") || "[]");
+
+let news =
+JSON.parse(localStorage.getItem("news") || "[]");
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+document
+.querySelectorAll(".nav-item[data-page]")
+.forEach(button=>{
+
+    button.addEventListener("click",()=>{
+
+        showPage(button.dataset.page);
+
+    });
+
+});
+
+
+function showPage(page){
+
+    document
+    .querySelectorAll(".page-section")
+    .forEach(section=>{
+
+        section.classList.remove("active");
+
+    });
+
+
+    const selected =
+    document.getElementById(page);
+
+    if(selected){
+        selected.classList.add("active");
+    }
+
+
+    document
+    .querySelectorAll(".nav-item")
+    .forEach(item=>{
+
+        item.classList.remove("active");
+
+    });
+
+
+    const active =
+    document.querySelector(
+        `.nav-item[data-page="${page}"]`
+    );
+
+    if(active){
+        active.classList.add("active");
+    }
+
+
+    document
+    .getElementById("sidebar")
+    .classList.remove("open");
+}
+
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+function toggleSidebar(){
+
+    document
+    .getElementById("sidebar")
+    .classList.toggle("open");
+
+}
+
+
+/* =====================================================
+   MODALS
+===================================================== */
+
+function openModal(id){
+
+    document
+    .getElementById(id)
+    .classList.add("show");
+
+}
+
+function closeModal(id){
+
+    document
+    .getElementById(id)
+    .classList.remove("show");
+
+}
+
+
+/* =====================================================
+   PATIENTS
+===================================================== */
+
+function addPatient(){
+
+    const patient={
+
+        name:document
+        .getElementById("patientName")
+        .value.trim(),
+
+        id:document
+        .getElementById("patientId")
+        .value.trim(),
+
+        phone:document
+        .getElementById("patientPhone")
+        .value.trim(),
+
+        gender:document
+        .getElementById("patientGender")
+        .value
+
+    };
+
+
+    if(!patient.name){
+
+        showToast("Enter patient name");
+
+        return;
+
+    }
+
+
+    patients.push(patient);
+
+    localStorage.setItem(
+        "patients",
+        JSON.stringify(patients)
+    );
+
+    closeModal("patientModal");
+
+    renderPatients();
+
+    updateStats();
+
+    showToast("Patient added");
+
+}
+
+
+function renderPatients(){
+
+    const table=
+    document.getElementById("patientTable");
+
+    table.innerHTML="";
+
+
+    patients.forEach((p,index)=>{
+
+        table.innerHTML+=`
+
+        <tr>
+
+            <td>${escapeHTML(p.name)}</td>
+
+            <td>${escapeHTML(p.id)}</td>
+
+            <td>${escapeHTML(p.phone)}</td>
+
+            <td>${escapeHTML(p.gender)}</td>
+
+            <td>
+
+                <button
+                    class="action-button delete"
+                    onclick="deletePatient(${index})">
+
+                    🗑️
+
+                </button>
+
+            </td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+
+function deletePatient(index){
+
+    patients.splice(index,1);
+
+    localStorage.setItem(
+        "patients",
+        JSON.stringify(patients)
+    );
+
+    renderPatients();
+
+    updateStats();
+
+}
+
+
+/* =====================================================
+   DOCTORS WITH PHOTO
+===================================================== */
+
+function addDoctor(){
+
+    const name=
+    document.getElementById("doctorName")
+    .value.trim();
+
+    const specialty=
+    document.getElementById("doctorSpecialty")
+    .value.trim();
+
+    const phone=
+    document.getElementById("doctorPhone")
+    .value.trim();
+
+    const photoInput=
+    document.getElementById("doctorPhoto");
+
+
+    if(!name){
+
+        showToast("Enter doctor name");
+
+        return;
+
+    }
+
+
+    if(photoInput.files.length){
+
+        const reader=
+        new FileReader();
+
+        reader.onload=function(e){
+
+            saveDoctor(
+                name,
+                specialty,
+                phone,
+                e.target.result
+            );
+
+        };
+
+        reader.readAsDataURL(
+            photoInput.files[0]
+        );
+
+    }else{
+
+        saveDoctor(
+            name,
+            specialty,
+            phone,
+            ""
+        );
+
+    }
+
+}
+
+
+function saveDoctor(
+    name,
+    specialty,
+    phone,
+    photo
+){
+
+    doctors.push({
+
+        name,
+        specialty,
+        phone,
+        photo,
+        status:"Active"
+
+    });
+
+
+    localStorage.setItem(
+        "doctors",
+        JSON.stringify(doctors)
+    );
+
+
+    closeModal("doctorModal");
+
+    renderDoctors();
+
+    updateStats();
+
+    showToast("Doctor added successfully");
+
+}
+
+
+function renderDoctors(){
+
+    const grid=
+    document.getElementById("doctorGrid");
+
+    grid.innerHTML="";
+
+
+    doctors.forEach((doctor,index)=>{
+
+        const photo=
+        doctor.photo ||
+        "https://via.placeholder.com/400x300?text=Doctor";
+
+
+        grid.innerHTML+=`
+
+        <div class="doctor-card">
+
+            <div class="doctor-photo">
+
+                <img
+                    src="${photo}"
+                    alt="${escapeHTML(doctor.name)}">
+
+            </div>
+
+            <div class="doctor-info">
+
+                <h3>
+                    ${escapeHTML(doctor.name)}
+                </h3>
+
+                <p>
+                    🩺 ${escapeHTML(doctor.specialty)}
+                </p>
+
+                <p>
+                    📞 ${escapeHTML(doctor.phone)}
+                </p>
+
+                <br>
+
+                <span class="status active">
+                    Active
+                </span>
+
+                <button
+                    class="action-button delete"
+                    onclick="deleteDoctor(${index})">
+
+                    🗑️
+
+                </button>
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+
+function deleteDoctor(index){
+
+    doctors.splice(index,1);
+
+    localStorage.setItem(
+        "doctors",
+        JSON.stringify(doctors)
+    );
+
+    renderDoctors();
+
+    updateStats();
+
+}
+
+
+/* =====================================================
+   APPOINTMENTS
+===================================================== */
+
+function addAppointment(){
+
+    const appointment={
+
+        patient:document
+        .getElementById("appointmentPatient")
+        .value.trim(),
+
+        doctor:document
+        .getElementById("appointmentDoctor")
+        .value.trim(),
+
+        date:document
+        .getElementById("appointmentDate")
+        .value,
+
+        time:document
+        .getElementById("appointmentTime")
+        .value,
+
+        status:"Pending"
+
+    };
+
+
+    if(
+        !appointment.patient ||
+        !appointment.doctor ||
+        !appointment.date
+    ){
+
+        showToast("Complete appointment details");
+
+        return;
+
+    }
+
+
+    appointments.push(appointment);
+
+    localStorage.setItem(
+        "appointments",
+        JSON.stringify(appointments)
+    );
+
+
+    closeModal("appointmentModal");
+
+    renderAppointments();
+
+    updateStats();
+
+    showToast("Appointment created");
+
+}
+
+
+function renderAppointments(){
+
+    const table=
+    document.getElementById("appointmentTable");
+
+    const recent=
+    document.getElementById("recentAppointments");
+
+    table.innerHTML="";
+    recent.innerHTML="";
+
+
+    appointments.forEach((a,index)=>{
+
+        table.innerHTML+=`
+
+        <tr>
+
+            <td>${escapeHTML(a.patient)}</td>
+
+            <td>${escapeHTML(a.doctor)}</td>
+
+            <td>${escapeHTML(a.date)}</td>
+
+            <td>${escapeHTML(a.time || "-")}</td>
+
+            <td>
+
+                <span class="status pending">
+                    ${escapeHTML(a.status)}
+                </span>
+
+            </td>
+
+            <td>
+
+                <button
+                    class="action-button delete"
+                    onclick="deleteAppointment(${index})">
+
+                    🗑️
+
+                </button>
+
+            </td>
+
+        </tr>
+
+        `;
+
+
+        if(index<5){
+
+            recent.innerHTML+=`
+
+            <tr>
+
+                <td>
+                    ${escapeHTML(a.patient)}
+                </td>
+
+                <td>
+                    ${escapeHTML(a.doctor)}
+                </td>
+
+                <td>
+                    ${escapeHTML(a.date)}
+                </td>
+
+                <td>
+
+                    <span class="status pending">
+                        ${escapeHTML(a.status)}
+                    </span>
+
+                </td>
+
+            </tr>
+
+            `;
+
+        }
+
+    });
+
+}
+
+
+function deleteAppointment(index){
+
+    appointments.splice(index,1);
+
+    localStorage.setItem(
+        "appointments",
+        JSON.stringify(appointments)
+    );
+
+    renderAppointments();
+
+    updateStats();
+
+}
+
+
+/* =====================================================
+   MEDICINE
+===================================================== */
+
+function addMedicine(){
+
+    const medicine={
+
+        name:document
+        .getElementById("medicineName")
+        .value.trim(),
+
+        category:document
+        .getElementById("medicineCategory")
+        .value.trim(),
+
+        stock:document
+        .getElementById("medicineStock")
+        .value,
+
+        expiry:document
+        .getElementById("medicineExpiry")
+        .value
+
+    };
+
+
+    if(!medicine.name){
+
+        showToast("Enter medicine name");
+
+        return;
+
+    }
+
+
+    medicines.push(medicine);
+
+    localStorage.setItem(
+        "medicines",
+        JSON.stringify(medicines)
+    );
+
+
+    closeModal("medicineModal");
+
+    renderMedicines();
+
+    updateStats();
+
+    showToast("Medicine added");
+
+}
+
+
+function renderMedicines(){
+
+    const table=
+    document.getElementById("medicineTable");
+
+    table.innerHTML="";
+
+
+    medicines.forEach((m,index)=>{
+
+        table.innerHTML+=`
+
+        <tr>
+
+            <td>${escapeHTML(m.name)}</td>
+
+            <td>${escapeHTML(m.category)}</td>
+
+            <td>${escapeHTML(String(m.stock))}</td>
+
+            <td>${escapeHTML(m.expiry)}</td>
+
+            <td>
+
+                <button
+                    class="action-button delete"
+                    onclick="deleteMedicine(${index})">
+
+                    🗑️
+
+                </button>
+
+            </td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+
+function deleteMedicine(index){
+
+    medicines.splice(index,1);
+
+    localStorage.setItem(
+        "medicines",
+        JSON.stringify(medicines)
+    );
+
+    renderMedicines();
+
+    updateStats();
+
+}
+
+
+/* =====================================================
+   MEDIA UPLOAD
+===================================================== */
+
+document
+.getElementById("mediaUpload")
+.addEventListener("change",function(){
+
+    const files=
+    Array.from(this.files);
+
+    const grid=
+    document.getElementById("mediaGrid");
+
+
+    files.forEach(file=>{
+
+        const card=
+        document.createElement("div");
+
+        card.className="media-card";
+
+
+        const preview=
+        document.createElement("div");
+
+        preview.className="media-preview";
+
+
+        const url=
+        URL.createObjectURL(file);
+
+
+        if(file.type.startsWith("image/")){
+
+            const img=
+            document.createElement("img");
+
+            img.src=url;
+
+            img.alt=file.name;
+
+            preview.appendChild(img);
+
+        }
+        else if(file.type.startsWith("video/")){
+
+            const video=
+            document.createElement("video");
+
+            video.src=url;
+
+            video.controls=true;
+
+            preview.appendChild(video);
+
+        }
+        else{
+
+            preview.textContent="📄";
+
+        }
+
+
+        const info=
+        document.createElement("div");
+
+        info.className="media-info";
+
+        info.textContent=file.name;
+
+
+        card.appendChild(preview);
+
+        card.appendChild(info);
+
+        grid.appendChild(card);
+
+    });
+
+
+    showToast(
+        files.length+" media file(s) added"
+    );
+
+});
+
+
+/* =====================================================
+   NEWS
+===================================================== */
+
+function addNews(){
+
+    const title=
+    document.getElementById("newsTitle")
+    .value.trim();
+
+    const date=
+    document.getElementById("newsDate")
+    .value;
+
+    const content=
+    document.getElementById("newsContent")
+    .value.trim();
+
+
+    if(!title || !content){
+
+        showToast("Complete the announcement");
+
+        return;
+
+    }
+
+
+    news.push({
+        title,
+        date,
+        content
+    });
+
+
+    localStorage.setItem(
+        "news",
+        JSON.stringify(news)
+    );
+
+
+    document.getElementById("newsTitle").value="";
+    document.getElementById("newsDate").value="";
+    document.getElementById("newsContent").value="";
+
+
+    renderNews();
+
+    showToast("Announcement published");
+
+}
+
+
+function renderNews(){
+
+    const list=
+    document.getElementById("newsList");
+
+    list.innerHTML="";
+
+
+    news.forEach((item,index)=>{
+
+        list.innerHTML+=`
+
+        <div class="panel">
+
+            <div class="panel-body">
+
+                <h3>
+                    ${escapeHTML(item.title)}
+                </h3>
+
+                <small style="color:#718096">
+                    ${escapeHTML(item.date || "No date")}
+                </small>
+
+                <p style="margin-top:12px;line-height:1.6">
+                    ${escapeHTML(item.content)}
+                </p>
+
+                <br>
+
+                <button
+                    class="action-button delete"
+                    onclick="deleteNews(${index})">
+
+                    Delete
+
+                </button>
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+
+function deleteNews(index){
+
+    news.splice(index,1);
+
+    localStorage.setItem(
+        "news",
+        JSON.stringify(news)
+    );
+
+    renderNews();
+
+}
+
+
+/* =====================================================
+   EMERGENCY SIREN
+===================================================== */
+
+let sirenActive=false;
+let audioContext=null;
+let sirenOscillator=null;
+let sirenGain=null;
+let sirenTimer=null;
+
+
+function toggleSiren(){
+
+    if(sirenActive){
+
+        stopSiren();
+
+    }else{
+
+        startSiren();
+
+    }
+
+}
+
+
+function startSiren(){
+
+    /*
+       IMPORTANT:
+       This function is called by a button click.
+       That allows the browser to permit audio.
+    */
+
+    if(!audioContext){
+
+        audioContext=
+        new (
+            window.AudioContext ||
+            window.webkitAudioContext
+        )();
+
+    }
+
+
+    if(audioContext.state==="suspended"){
+
+        audioContext.resume();
+
+    }
+
+
+    sirenActive=true;
+
+
+    const light=
+    document.getElementById("sirenLight");
+
+    light.classList.add("active");
+
+
+    document
+    .getElementById("sirenButton")
+    .classList.add("active");
+
+
+    document
+    .getElementById("sirenButton")
+    .textContent=
+    "🔇 STOP SIREN";
+
+
+    document
+    .getElementById("emergencyTitle")
+    .textContent=
+    "🚨 EMERGENCY SIREN ACTIVE";
+
+
+    document
+    .getElementById("emergencyText")
+    .textContent=
+    "Emergency alert is currently active.";
+
+
+    const emergencyPageTitle=
+    document.getElementById(
+        "emergencyPageTitle"
+    );
+
+    if(emergencyPageTitle){
+
+        emergencyPageTitle.textContent=
+        "🚨 SIREN ACTIVE";
+
+    }
+
+
+    createSirenTone();
+
+    showToast("🚨 Emergency siren activated");
+
+}
+
+
+function createSirenTone(){
+
+    if(!sirenActive)return;
+
+
+    sirenOscillator=
+    audioContext.createOscillator();
+
+    sirenGain=
+    audioContext.createGain();
+
+
+    sirenOscillator.type="sawtooth";
+
+    sirenOscillator.frequency.value=650;
+
+    sirenGain.gain.value=.08;
+
+
+    sirenOscillator
+    .connect(sirenGain)
+    .connect(audioContext.destination);
+
+
+    sirenOscillator.start();
+
+
+    let high=true;
+
+
+    sirenTimer=
+    setInterval(()=>{
+
+        if(!sirenOscillator)return;
+
+
+        const now=
+        audioContext.currentTime;
+
+
+        sirenOscillator
+        .frequency
+        .linearRampToValueAtTime(
+            high ? 1100 : 550,
+            now+.45
+        );
+
+
+        high=!high;
+
+    },450);
+
+}
+
+
+function stopSiren(){
+
+    sirenActive=false;
+
+
+    if(sirenTimer){
+
+        clearInterval(sirenTimer);
+
+        sirenTimer=null;
+
+    }
+
+
+    if(sirenOscillator){
+
+        try{
+            sirenOscillator.stop();
+        }catch(e){}
+
+        sirenOscillator.disconnect();
+
+        sirenOscillator=null;
+
+    }
+
+
+    if(sirenGain){
+
+        sirenGain.disconnect();
+
+        sirenGain=null;
+
+    }
+
+
+    document
+    .getElementById("sirenLight")
+    .classList.remove("active");
+
+
+    document
+    .getElementById("sirenButton")
+    .classList.remove("active");
+
+
+    document
+    .getElementById("sirenButton")
+    .textContent=
+    "🔊 START SIREN";
+
+
+    document
+    .getElementById("emergencyTitle")
+    .textContent=
+    "Emergency System Ready";
+
+
+    document
+    .getElementById("emergencyText")
+    .textContent=
+    "Press the siren button to activate emergency alert.";
+
+
+    const pageTitle=
+    document.getElementById(
+        "emergencyPageTitle"
+    );
+
+    if(pageTitle){
+
+        pageTitle.textContent=
+        "Emergency Standby";
+
+    }
+
+
+    showToast("Siren stopped");
+
+}
+
+
+/* =====================================================
+   ACTIVATE EMERGENCY
+===================================================== */
+
+function activateEmergency(){
+
+    const type=
+    document.getElementById(
+        "emergencyType"
+    ).value;
+
+    const location=
+    document.getElementById(
+        "emergencyLocation"
+    ).value.trim();
+
+
+    startSiren();
+
+
+    document
+    .getElementById("ambulanceEmergency")
+    .textContent=
+    "ACTIVE";
+
+
+    addActivity(
+        "🚨 Emergency activated: "+
+        type+
+        (location ? " — "+location : "")
+    );
+
+}
+
+
+/* =====================================================
+   ACTIVITY
+===================================================== */
+
+function addActivity(text){
+
+    const list=
+    document.getElementById(
+        "activityList"
+    );
+
+
+    const item=
+    document.createElement("p");
+
+    item.style.fontSize="13px";
+
+    item.style.marginBottom="14px";
+
+    item.textContent=text;
+
+
+    list.prepend(item);
+
+}
+
+
+/* =====================================================
+   STATISTICS
+===================================================== */
+
+function updateStats(){
+
+    document.getElementById(
+        "patientCount"
+    ).textContent=
+    patients.length;
+
+
+    document.getElementById(
+        "doctorCount"
+    ).textContent=
+    doctors.length;
+
+
+    document.getElementById(
+        "appointmentCount"
+    ).textContent=
+    appointments.length;
+
+
+    document.getElementById(
+        "medicineCount"
+    ).textContent=
+    medicines.length;
+
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+function showToast(text){
+
+    const toast=
+    document.getElementById("toast");
+
+    toast.textContent=text;
+
+    toast.classList.add("show");
+
+
+    setTimeout(()=>{
+
+        toast.classList.remove("show");
+
+    },2500);
+
+}
+
+
+/* =====================================================
+   SECURITY DISPLAY
+===================================================== */
+
+function escapeHTML(value){
+
+    return String(value)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+function logout(){
+
+    stopSiren();
+
+    sessionStorage.removeItem(
+        "adminLoggedIn"
+    );
+
+    window.location.href="index.html";
+
+}
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+renderPatients();
+renderDoctors();
+renderAppointments();
+renderMedicines();
+renderNews();
+updateStats();
+</script>

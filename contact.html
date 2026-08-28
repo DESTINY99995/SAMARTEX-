@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Contact | Samartex Hospital</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="navbar">
+
+        <a href="index.html" class="logo">
+
+            <img
+                src="images/logo.png"
+                alt="Samartex Hospital Logo">
+
+            <span>Samartex Hospital</span>
+
+        </a>
+
+        <button
+            class="menu-btn"
+            onclick="toggleMenu()">
+
+            ☰
+
+        </button>
+
+        <nav id="navMenu">
+
+            <a href="index.html">Home</a>
+
+            <a href="about.html">About</a>
+
+            <a href="departments.html">Departments</a>
+
+            <a href="services.html">Services</a>
+
+            <a href="doctors.html">Doctors</a>
+
+            <a href="appointments.html">Appointments</a>
+
+            <a href="patients.html">Patients</a>
+
+            <a href="pharmacy.html">Pharmacy</a>
+
+            <a href="gallery.html">Gallery</a>
+
+            <a class="active"
+               href="contact.html">
+
+                Contact
+
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+<section class="page-header">
+
+    <h1>Contact Us</h1>
+
+    <p>
+        Get in touch with Samartex Hospital.
+    </p>
+
+</section>
+
+<section class="section">
+
+    <div class="cards">
+
+        <div class="card">
+
+            <div class="card-content">
+
+                <h3>📍 Location</h3>
+
+                <p>
+                    Samartex Hospital<br>
+                    Ghana
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <div class="card-content">
+
+                <h3>📞 Telephone</h3>
+
+                <p>
+                    +233 27 71 00123
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <div class="card-content">
+
+                <h3>✉ Email</h3>
+
+                <p>
+                    info@samartexhospital.com
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <div class="card-content">
+
+                <h3>🚑 Emergency</h3>
+
+                <p>
+                    Contact the hospital emergency
+                    department for urgent assistance.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="section">
+
+    <div class="section-title">
+
+        <h2>Send Us a Message</h2>
+
+    </div>
+
+    <form id="contactForm">
+
+        <div class="form-grid">
+
+            <div class="field">
+
+                <label>Full Name</label>
+
+                <input
+                    type="text"
+                    required
+                    placeholder="Your name">
+
+            </div>
+
+            <div class="field">
+
+                <label>Email</label>
+
+                <input
+                    type="email"
+                    required
+                    placeholder="Your email">
+
+            </div>
+
+            <div class="field full">
+
+                <label>Subject</label>
+
+                <input
+                    type="text"
+                    required
+                    placeholder="Message subject">
+
+            </div>
+
+            <div class="field full">
+
+                <label>Message</label>
+
+                <textarea
+                    required
+                    placeholder="Write your message here">
+                </textarea>
+
+            </div>
+
+            <div class="field full">
+
+                <button
+                    class="submit"
+                    type="submit">
+
+                    Send Message
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</section>
+
+<footer>
+
+    <div class="copyright">
+
+    <a href="admin.html">    © </a>2026 Samartex Hospital. All Rights Reserved.
+
+    </div>
+
+</footer>
+
+<script src="script.js"></script>
+
+<script>
+
+document
+.getElementById("contactForm")
+.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    alert(
+        "Thank you. Your message has been submitted."
+    );
+
+    this.reset();
+
+});
+
+</script>
+
+</body>
+</html></p>
+</footer>
+
+</body>
+</html>

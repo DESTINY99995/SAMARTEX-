@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Portal | Samartex Hospital</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .patient-login {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0,0,0,.08);
+        }
+
+        .patient-login h2 {
+            margin-bottom: 10px;
+        }
+
+        .patient-login p {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .patient-login input {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .submit {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #patientRecord {
+            display: none;
+            max-width: 1000px;
+            margin: 40px auto;
+        }
+
+        .patient-card {
+            background: #fff;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 8px 30px rgba(0,0,0,.08);
+        }
+
+        .patient-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .patient-card-header h2 {
+            margin: 0;
+        }
+
+        .patient-id {
+            background: #eaf7f1;
+            color: #087443;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .record-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .record-item {
+            background: #f7f9fa;
+            padding: 18px;
+            border-radius: 10px;
+        }
+
+        .record-item span {
+            display: block;
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 6px;
+        }
+
+        .record-item strong {
+            font-size: 16px;
+        }
+
+        .medical-section {
+            margin-top: 30px;
+        }
+
+        .medical-section h3 {
+            margin-bottom: 15px;
+        }
+
+        .logout-btn {
+            background: #c62828;
+            color: white;
+            border: none;
+            padding: 11px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .message {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        @media(max-width: 700px) {
+            .record-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .patient-card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="navbar">
+
+        <a href="index.html" class="logo">
+            <img src="images/logo.png" alt="Samartex Hospital Logo">
+            <span>Samartex Hospital</span>
+        </a>
+
+        <button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+        <nav id="navMenu">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="departments.html">Departments</a>
+            <a href="services.html">Services</a>
+            <a href="doctors.html">Doctors</a>
+            <a href="appointments.html">Appointments</a>
+            <a class="active" href="patients.html">Patients</a>
+            <a href="pharmacy.html">Pharmacy</a>
+            <a href="gallery.html">Gallery</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+
+    </div>
+</header>
+
+
+<section class="page-header">
+    <h1>Patient Portal</h1>
+    <p>Access your Samartex Hospital medical information.</p>
+</section>
+
+
+<!-- PATIENT LOGIN -->
+
+<section class="section" id="loginSection">
+
+    <div class="patient-login">
+
+        <h2>Patient Access</h2>
+
+        <p>
+            Enter the Patient ID provided by Samartex Hospital
+            to view your patient information.
+        </p>
+
+        <input
+            type="text"
+            id="patientId"
+            placeholder="Enter Patient ID"
+            required
+        >
+
+        <button class="submit" onclick="loginPatient()">
+            View My Records
+        </button>
+
+        <div id="loginMessage" class="message"></div>
+
+    </div>
+
+</section>
+
+
+<!-- PATIENT RECORD -->
+
+<section id="patientRecord">
+
+    <div class="patient-card">
+
+        <div class="patient-card-header">
+
+            <div>
+                <h2 id="patientName"></h2>
+                <p>Samartex Hospital Patient Record</p>
+            </div>
+
+            <div>
+                <span class="patient-id" id="displayPatientId"></span>
+                <button class="logout-btn" onclick="logoutPatient()">
+                    Logout
+                </button>
+            </div>
+
+        </div>
+
+
+        <div class="record-grid">
+
+            <div class="record-item">
+                <span>Date of Birth</span>
+                <strong id="dob"></strong>
+            </div>
+
+            <div class="record-item">
+                <span>Gender</span>
+                <strong id="gender"></strong>
+            </div>
+
+            <div class="record-item">
+                <span>Phone</span>
+                <strong id="phone"></strong>
+            </div>
+
+            <div class="record-item">
+                <span>Email</span>
+                <strong id="email"></strong>
+            </div>
+
+            <div class="record-item">
+                <span>Blood Group</span>
+                <strong id="bloodGroup"></strong>
+            </div>
+
+            <div class="record-item">
+                <span>Doctor</span>
+                <strong id="doctor"></strong>
+            </div>
+
+            <div class="record-item">
+                <span>Department</span>
+                <strong id="department"></strong>
+            </div>
+
+            <div class="record-item">
+                <span>Registration Date</span>
+                <strong id="registrationDate"></strong>
+            </div>
+
+        </div>
+
+
+        <div class="medical-section">
+
+            <h3>Medical Information</h3>
+
+            <div class="record-grid">
+
+                <div class="record-item">
+                    <span>Diagnosis</span>
+                    <strong id="diagnosis"></strong>
+                </div>
+
+                <div class="record-item">
+                    <span>Current Medication</span>
+                    <strong id="medication"></strong>
+                </div>
+
+                <div class="record-item">
+                    <span>Next Appointment</span>
+                    <strong id="nextAppointment"></strong>
+                </div>
+
+                <div class="record-item">
+                    <span>Patient Status</span>
+                    <strong id="status"></strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<footer>
+
+    <div class="copyright">
+        © 2026 Samartex Hospital. All Rights Reserved.
+    </div>
+
+</footer>
+
+
+<script src="script.js"></script>
+
+<script>
+
+function loginPatient() {
+
+    const enteredId =
+        document.getElementById("patientId").value
+        .trim()
+        .toUpperCase();
+
+    const message =
+        document.getElementById("loginMessage");
+
+    if (!enteredId) {
+
+        message.textContent =
+            "Please enter your Patient ID.";
+
+        return;
+    }
+
+
+    /*
+       Patient records created by the ADMIN
+       are stored in localStorage.
+    */
+
+    const patients =
+        JSON.parse(localStorage.getItem("samartexPatients")) || [];
+
+
+    const patient =
+        patients.find(p =>
+            p.patientId.toUpperCase() === enteredId
+        );
+
+
+    if (!patient) {
+
+        message.textContent =
+            "Patient ID not found. Please contact Samartex Hospital.";
+
+        return;
+    }
+
+
+    // Hide login
+    document.getElementById("loginSection").style.display = "none";
+
+
+    // Show record
+    document.getElementById("patientRecord").style.display = "block";
+
+
+    // Display patient information
+
+    document.getElementById("patientName").textContent =
+        patient.name || "Not available";
+
+    document.getElementById("displayPatientId").textContent =
+        patient.patientId || "Not available";
+
+    document.getElementById("dob").textContent =
+        patient.dob || "Not available";
+
+    document.getElementById("gender").textContent =
+        patient.gender || "Not available";
+
+    document.getElementById("phone").textContent =
+        patient.phone || "Not available";
+
+    document.getElementById("email").textContent =
+        patient.email || "Not available";
+
+    document.getElementById("bloodGroup").textContent =
+        patient.bloodGroup || "Not available";
+
+    document.getElementById("doctor").textContent =
+        patient.doctor || "Not assigned";
+
+    document.getElementById("department").textContent =
+        patient.department || "Not assigned";
+
+    document.getElementById("registrationDate").textContent =
+        patient.registrationDate || "Not available";
+
+    document.getElementById("diagnosis").textContent =
+        patient.diagnosis || "Not available";
+
+    document.getElementById("medication").textContent =
+        patient.medication || "None";
+
+    document.getElementById("nextAppointment").textContent =
+        patient.nextAppointment || "Not scheduled";
+
+    document.getElementById("status").textContent =
+        patient.status || "Active";
+}
+
+
+function logoutPatient() {
+
+    document.getElementById("patientRecord").style.display = "none";
+
+    document.getElementById("loginSection").style.display = "block";
+
+    document.getElementById("patientId").value = "";
+
+    document.getElementById("loginMessage").textContent = "";
+}
+
+</script>
+
+</body>
+</html>

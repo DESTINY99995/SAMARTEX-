@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointments | Samartex Hospital</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <div class="navbar">
+
+        <a href="index.html" class="logo">
+            <img src="images/logo.png" alt="Samartex Hospital Logo">
+            <span>Samartex Hospital</span>
+        </a>
+
+        <button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+        <nav id="navMenu">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="departments.html">Departments</a>
+            <a href="services.html">Services</a>
+            <a href="doctors.html">Doctors</a>
+            <a class="active" href="appointments.html">Appointments</a>
+            <a href="patients.html">Patients</a>
+            <a href="pharmacy.html">Pharmacy</a>
+            <a href="gallery.html">Gallery</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+
+    </div>
+</header>
+
+<section class="page-header">
+    <h1>Book an Appointment</h1>
+    <p>Complete the form below to request an appointment.</p>
+</section>
+
+<section class="section">
+
+<form id="appointmentForm">
+
+    <div class="form-grid">
+
+        <div class="field">
+            <label>Full Name</label>
+            <input type="text" required placeholder="Enter your name">
+        </div>
+
+        <div class="field">
+            <label>Phone Number</label>
+            <input type="tel" required placeholder="024 000 0000">
+        </div>
+
+        <div class="field">
+            <label>Email</label>
+            <input type="email" placeholder="example@email.com">
+        </div>
+
+        <div class="field">
+            <label>Date</label>
+            <input type="date" required>
+        </div>
+
+        <div class="field">
+            <label>Department</label>
+
+            <select required>
+                <option value="">Select Department</option>
+                <option>General Medicine</option>
+                <option>Maternal & Child Health</option>
+                <option>Laboratory</option>
+                <option>Emergency</option>
+                <option>Outpatient Department</option>
+            </select>
+
+        </div>
+
+        <div class="field">
+            <label>Preferred Time</label>
+            <input type="time">
+        </div>
+
+        <div class="field full">
+            <label>Reason for Appointment</label>
+            <textarea placeholder="Enter your request"></textarea>
+        </div>
+
+        <div class="field full">
+            <button class="submit" type="submit">
+                Submit Appointment
+            </button>
+        </div>
+
+    </div>
+
+</form>
+
+</section>
+
+<footer>
+    <div class="copyright">
+<a href="admin.html">    © </a>2026 Samartex Hospital. All Rights Reserved.
+    </div>
+</footer>
+
+<script src="script.js"></script>
+
+<script>
+document.getElementById("appointmentForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    alert("Your appointment request has been submitted successfully.");
+
+    this.reset();
+});
+</script>
+
+</body>
+</html>
